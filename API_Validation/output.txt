@@ -1,0 +1,23 @@
+
+Employee Validation Test
+
+---- Creating Employee ----
+Created: 19add72e-c89b-4a33-90c9-40d554a202cf Sahil Kumbhar
+
+---- Fetching Employee ----
+Fetched: Sahil Kumbhar
+
+---- Updating Employee ----
+Updated Salary: 80000
+
+---- Fetching All Employees ----
+Total Active Employees: 1
+
+---- Soft Deleting Employee ----
+After Delete Fetch (Should be None): None
+
+---- Invalid Data Test ----
+Validation Error: Create Validation Error: 'InvalidGender' is not one of ['Male', 'Female', 'Other']
+Name Validation Error: Create Validation Error: 'name' is a required property
+
+Test Completed
