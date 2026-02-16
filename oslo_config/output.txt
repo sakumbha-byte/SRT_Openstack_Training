@@ -1,0 +1,44 @@
+[uWSGI] getting INI configuration from uwsgi.ini
+*** Starting uWSGI 2.0.31 (64bit) on [Mon Feb 16 09:44:18 2026] ***
+compiled with version: 11.4.0 on 13 February 2026 09:21:35
+os: Linux-5.15.0-170-generic #180-Ubuntu SMP Fri Jan 9 16:10:31 UTC 2026
+nodename: sahil-test
+machine: x86_64
+clock source: unix
+detected number of CPU cores: 16
+current working directory: /opt/stack/myservice
+detected binary path: /home/ubuntu/.local/bin/uwsgi
+!!! no internal routing support, rebuild with pcre support !!!
+your processes number limit is 63781
+your memory page size is 4096 bytes
+detected max file descriptor number: 1024
+lock engine: pthread robust mutexes
+thunder lock: disabled (you can enable it with --thunder-lock)
+uWSGI http bound on 127.0.0.1:9090 fd 4
+uwsgi socket 0 bound to TCP address 127.0.0.1:36905 (port auto-assigned) fd 3
+Python version: 3.10.12 (main, Jan 26 2026, 14:55:28) [GCC 11.4.0]
+Python main interpreter initialized at 0x55fa461c5bc0
+python threads support enabled
+your server socket listen backlog is limited to 100 connections
+your mercy for graceful operations on workers is 60 seconds
+mapped 218760 bytes (213 KB) for 2 cores
+*** Operational MODE: preforking ***
+WSGI app 0 (mountpoint='') ready in 1 seconds on interpreter 0x55fa461c5bc0 pid: 3249722 (default app)
+*** uWSGI is running in multiple interpreter mode ***
+spawned uWSGI master process (pid: 3249722)
+spawned uWSGI worker 1 (pid: 3249729, cores: 1)
+spawned uWSGI worker 2 (pid: 3249730, cores: 1)
+spawned uWSGI http 1 (pid: 3249732)
+2026-02-16 09:44:30.311 3249730 INFO myservice.api [-] API request received
+[pid: 3249730|app: 0|req: 1/1] 127.0.0.1 () {28 vars in 292 bytes} [Mon Feb 16 09:44:30 2026] GET / => generated 23 bytes in 3 msecs (HTTP/1.1 200) 1 headers in 45 bytes (1 switches on core 0)
+^CSIGINT/SIGTERM received...killing workers...
+gateway "uWSGI http 1" has been buried (pid: 3249732)
+^Cworker 1 buried after 1 seconds
+worker 2 buried after 1 seconds
+goodbye to uWSGI.
+
+
+
+
+curl http://127.0.0.1:9090
+Hello from oslo.config!
