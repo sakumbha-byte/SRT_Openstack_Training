@@ -1,0 +1,206 @@
+ubuntu@sahil-test:~$ openstack project create assign8
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description |                                  |
+| domain_id   | default                          |
+| enabled     | True                             |
+| id          | 3c53992648f24ac18f8021c227df68d4 |
+| is_domain   | False                            |
+| name        | assign8                          |
+| options     | {}                               |
+| parent_id   | default                          |
+| tags        | []                               |
++-------------+----------------------------------+
+
+
+ubuntu@sahil-test:~$ openstack project list
++----------------------------------+--------------------+
+| ID                               | Name               |
++----------------------------------+--------------------+
+| 0d462c0a00984f73853f6a2cf7ae14c0 | alt_demo           |
+| 2afa1a7ec54941aa94616f6223c404ea | service            |
+| 3c53992648f24ac18f8021c227df68d4 | assign8            |
+| 72aaa098abd04f54a5960760746ff626 | admin              |
+| a439ff96644941448a71448a5bae8678 | demo               |
+| f6a687d572be4677b40352bc43649dca | invisible_to_admin |
++----------------------------------+--------------------+
+
+
+ubuntu@sahil-test:~$ openstack role create role_access
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| id          | 80c3d9e5ed6d47089e8ca59164b1bd42 |
+| name        | role_access                      |
+| domain_id   | None                             |
+| description | None                             |
++-------------+----------------------------------+
+
+ubuntu@sahil-test:~$ openstack role list
++----------------------------------+---------------+
+| ID                               | Name          |
++----------------------------------+---------------+
+| 0faf14a5ad134f70ab1b4efa70d0036a | ResellerAdmin |
+| 3a36d6fe5c3d4d0a90f248bf685a6dbd | anotherrole   |
+| 55dcd3d1debb4c9384c399b02b832966 | member        |
+| 7a66748e42814811b9f50d89211ae60d | manager       |
+| 80c3d9e5ed6d47089e8ca59164b1bd42 | role_access   |
+| 8799b2201188442faa2adac9726b76c5 | service       |
+| c9f63cbda1594bed8235b22f4b4e3842 | reader        |
+| e6b127ad5a0648ffb9e5508a32d1a76a | admin         |
++----------------------------------+---------------+
+
+ubuntu@sahil-test:~$ openstack user create user_keystone --password admin
++---------------------+----------------------------------+
+| Field               | Value                            |
++---------------------+----------------------------------+
+| default_project_id  | None                             |
+| domain_id           | default                          |
+| email               | None                             |
+| enabled             | True                             |
+| id                  | 96f2463e74db4ac0bf9eb956a9d97eb2 |
+| name                | user_keystone                    |
+| description         | None                             |
+| password_expires_at | None                             |
+| options             | {}                               |
++---------------------+----------------------------------+
+
+ubuntu@sahil-test:~$ openstack user list
++----------------------------------+-----------------+
+| ID                               | Name            |
++----------------------------------+-----------------+
+| 1760bdd4d7724d059db3ddbb4ecfa35e | demo            |
+| 5274b740f3864728b86758bfe9a4f948 | system_reader   |
+| 96f2463e74db4ac0bf9eb956a9d97eb2 | user_keystone   |
+| 9bfb8f69ba274005911472ccb0562042 | demo_reader     |
+| 9f6971953ca843f6835e9279fe982b54 | admin           |
+| a5914577207d4b5dbd9895f26f1f7256 | nova            |
+| ab815635ecb141919ad79149579f5723 | glance          |
+| ade49869053d46fca0dbf54bd6213f32 | alt_demo        |
+| e7ccbe50104149d599c3509fa4664ade | system_member   |
+| e819f455e7b44f099dfdd9feff8a0f6c | neutron         |
+| e829fbc78ca044eea2f438745ff6f295 | cinder          |
+| f0c95dd02c234862bdc47c034829b55a | alt_demo_reader |
+| f9ad655d5c80419dadfdbd985058b356 | placement       |
+| ff9f4d4c5a914cacb395b0808e55f4ae | alt_demo_member |
++----------------------------------+-----------------+
+
+ubuntu@sahil-test:~$ openstack role assignment list --project assign8 --user user_keystone
++---------------------------------+---------------------------------+-------+----------------------------------+--------+--------+-----------+
+| Role                            | User                            | Group | Project                          | Domain | System | Inherited |
++---------------------------------+---------------------------------+-------+----------------------------------+--------+--------+-----------+
+| 80c3d9e5ed6d47089e8ca59164b1bd4 | 96f2463e74db4ac0bf9eb956a9d97eb |       | 3c53992648f24ac18f8021c227df68d4 |        |        | False     |
+| 2                               | 2                               |       |                                  |        |        |           |
++---------------------------------+---------------------------------+-------+----------------------------------+--------+--------+-----------+
+
+
+ubuntu@sahil-test:~$ vim user_keystone-openrc
+
+ubuntu@sahil-test:~$ cat user_keystone-openrc
+export OS_AUTH_URL=https://10.0.110.225/identity
+export OS_PROJECT_NAME=assign8
+export OS_USERNAME=user_keystone
+export OS_PASSWORD=admin
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
+
+
+ubuntu@sahil-test:~$ source user_keystone-openrc
+
+ubuntu@sahil-test:~$ openstack token issue
++------------+-------------------------------------------------------------------------------------------------------------------------------+
+| Field      | Value                                                                                                                         |
++------------+-------------------------------------------------------------------------------------------------------------------------------+
+| expires    | 2026-02-24T06:05:28+0000                                                                                                      |
+| id         | gAAAAABpnTGYx4D6LuQmJ5b_IH3wnCwLB2ueNiAHqBtwcsGnNpSglcC6QyAd2HS7vtaipAE4DuEFqeIAEg-                                           |
+|            | IW9eCUY5eEyk1bQYUnXKQFp2TVXCnXtL_WHemlVOT5oytpeNuO2RKcXJGg4iK-5nmX5oziDmMBO9Q_b66ELm0sMXJKOTOPWHN-5k                          |
+| project_id | 3c53992648f24ac18f8021c227df68d4                                                                                              |
+| user_id    | 96f2463e74db4ac0bf9eb956a9d97eb2                                                                                              |
++------------+-------------------------------------------------------------------------------------------------------------------------------+
+
+ubuntu@sahil-test:/opt/stack/nova/etc/nova$ cat README-policy.yaml.txt
+Nova
+====
+
+To generate the sample nova policy.yaml file, run the following command from
+the top level of the nova directory:
+
+    tox -egenpolicy
+
+For a pre-generated example of the latest nova policy.yaml, see:
+
+    https://docs.openstack.org/nova/latest/configuration/sample-policy.html
+
+
+ubuntu@sahil-test:/opt/stack/nova$ tox -egenpolicy
+genpolicy create: /opt/stack/nova/.tox/genpolicy
+genpolicy installdeps: -r/opt/stack/nova/test-requirements.txt
+genpolicy develop-inst: /opt/stack/nova
+genpolicy installed: alembic==1.18.4,amqp==5.3.1,async-timeout==5.0.1,attrs==25.4.0,autopage==0.6.0,backports.strenum==1.3.1,bandit==1.9.3,bcrypt==5.0.0,cachetools==7.0.1,castellan==5.5.0,certifi==2026.1.4,cffi==2.0.0,charset-normalizer==3.4.4,cliff==4.13.2,cmd2==3.2.0,colorama==0.4.6,cotyledon==2.2.0,coverage==7.13.4,cryptography==43.0.3,cursive==0.2.3,ddt==1.7.2,debtcollector==3.0.0,decorator==5.2.1,dnspython==2.8.0,dogpile.cache==1.5.0,eventlet==0.40.4,exceptiongroup==1.3.1,fasteners==0.20,fixtures==4.3.0,flake8==6.1.0,futurist==3.2.1,gabbi==3.1.0,greenlet==3.3.2,hacking==6.1.0,idna==3.11,iniconfig==2.3.0,invoke==2.2.1,iso8601==2.1.0,Jinja2==3.1.6,jmespath==1.1.0,jsonpatch==1.33,jsonpath-rw==1.4.0,jsonpath-rw-ext==1.2.2,jsonpointer==3.0.0,jsonschema==4.26.0,jsonschema-specifications==2025.9.1,jwcrypto==1.5.6,keystoneauth1==5.13.1,keystonemiddleware==12.0.0,kombu==5.6.2,lxml==6.0.2,Mako==1.3.10,markdown-it-py==4.0.0,MarkupSafe==3.0.3,mccabe==0.7.0,mdurl==0.1.2,microversion_parse==2.1.0,msgpack==1.1.2,netaddr==1.3.0,-e git+https://opendev.org/openstack/nova.git@64d6ba34c5eade5b1729d0250d61211833c2457b#egg=nova,numpy==2.2.6,openstacksdk==4.10.0,os-brick==7.0.0,os-resource-classes==1.1.0,os-service-types==1.8.2,os-traits==3.6.0,os_vif==4.3.0,osc-lib==4.4.0,oslo.cache==4.1.0,oslo.concurrency==7.4.0,oslo.config==10.3.0,oslo.context==6.3.0,oslo.db==18.0.0,oslo.i18n==6.7.2,oslo.limit==2.10.0,oslo.log==8.1.0,oslo.messaging==17.3.0,oslo.metrics==0.15.1,oslo.middleware==8.0.0,oslo.policy==5.0.0,oslo.privsep==3.10.1,oslo.reports==3.7.0,oslo.rootwrap==7.9.0,oslo.serialization==5.9.1,oslo.service==4.5.1,oslo.upgradecheck==2.7.1,oslo.utils==10.0.0,oslo.versionedobjects==3.9.0,oslotest==6.0.0,osprofiler==4.3.0,ovs==3.7.0,ovsdbapp==2.16.0,packaging==26.0,paramiko==4.0.0,Paste==3.10.1,PasteDeploy==3.1.0,pbr==7.0.3,platformdirs==4.9.2,pluggy==1.6.0,ply==3.11,prettytable==3.17.0,prometheus_client==0.24.1,psutil==7.2.2,psycopg2-binary==2.9.11,pycadf==4.0.1,pycodestyle==2.11.1,pycparser==3.0,pyflakes==3.1.0,Pygments==2.19.2,PyJWT==2.11.0,PyMySQL==1.1.2,PyNaCl==1.6.2,pyOpenSSL==24.2.1,pyparsing==3.3.2,pyperclip==1.11.0,pyroute2==0.8.1,pytest==9.0.2,python-barbicanclient==7.2.0,python-cinderclient==9.8.0,python-dateutil==2.9.0.post0,python-glanceclient==4.10.0,python-keystoneclient==5.7.0,python-neutronclient==11.7.0,python-subunit==1.4.5,PyYAML==6.0.3,redis==7.2.0,referencing==0.37.0,repoze.lru==0.7,requests==2.32.5,requests-mock==1.12.1,requestsexceptions==1.4.0,retrying==1.4.2,rfc3986==2.0.0,rich==14.3.3,rich-argparse==1.7.2,Routes==2.5.1,rpds-py==0.30.0,setproctitle==1.3.7,six==1.17.0,sortedcontainers==2.4.0,SQLAlchemy==2.0.46,statsd==4.0.1,stestr==4.2.1,stevedore==5.7.0,tenacity==9.1.4,testresources==2.0.2,testscenarios==0.5.0,testtools==2.7.2,tomli==2.4.0,tomlkit==0.14.0,tooz==8.1.0,typing_extensions==4.15.0,tzdata==2025.3,urllib3==1.26.20,vine==5.1.0,voluptuous==0.16.0,warlock==2.1.0,wcwidth==0.6.0,WebOb==1.8.9,websockify==0.13.0,wrapt==2.1.1,wsgi_intercept==1.13.1,yappi==1.7.3
+genpolicy run-test-pre: PYTHONHASHSEED='3571718809'
+genpolicy run-test: commands[0] | oslopolicy-sample-generator --config-file=etc/nova/nova-policy-generator.conf
+__________________________________________________________________ summary ___________________________________________________________________
+  genpolicy: commands succeeded
+  congratulations :)
+
+
+ource ~/devstack/openrc admin admin
+ubuntu@sahil-test:~$ openstack user show user_keystone
+openstack project show assign8
+openstack role show role_access
++---------------------+----------------------------------+
+| Field               | Value                            |
++---------------------+----------------------------------+
+| default_project_id  | None                             |
+| domain_id           | default                          |
+| email               | None                             |
+| enabled             | True                             |
+| id                  | 96f2463e74db4ac0bf9eb956a9d97eb2 |
+| name                | user_keystone                    |
+| description         | None                             |
+| password_expires_at | None                             |
+| options             | {}                               |
++---------------------+----------------------------------+
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description |                                  |
+| domain_id   | default                          |
+| enabled     | True                             |
+| id          | 3c53992648f24ac18f8021c227df68d4 |
+| is_domain   | False                            |
+| name        | assign8                          |
+| options     | {}                               |
+| parent_id   | default                          |
+| tags        | []                               |
++-------------+----------------------------------+
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| id          | 80c3d9e5ed6d47089e8ca59164b1bd42 |
+| name        | role_access                      |
+| domain_id   | None                             |
+| description | None                             |
++-------------+----------------------------------+
+ubuntu@sahil-test:~$ openstack role assignment list --user 96f2463e74db4ac0bf9eb956a9d97eb2 --project 3c53992648f24ac18f8021c227df68d4 --names
++-------------+-----------------------+-------+-----------------+--------+--------+-----------+
+| Role        | User                  | Group | Project         | Domain | System | Inherited |
++-------------+-----------------------+-------+-----------------+--------+--------+-----------+
+| role_access | user_keystone@Default |       | assign8@Default |        |        | False     |
++-------------+-----------------------+-------+-----------------+--------+--------+-----------+
+
+ubuntu@sahil-test:~$ grep enforce_scope /etc/nova/nova.conf
+grep enforce_new_defaults /etc/nova/nova.conf
+enforce_scope = True
+enforce_new_defaults = True
+
+ubuntu@sahil-test:~$ source ~/devstack/openrc admin admin
+
+ubuntu@sahil-test:~$ openstack role add --project assign8 --user user_keystone member
+
+ubuntu@sahil-test:~$ source user_keystone-openrc
+
+openstack server list 
+**there is no list so no output**
+**checked for the 403: forbidden**
